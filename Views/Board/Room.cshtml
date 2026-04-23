@@ -1,0 +1,36 @@
+﻿@{
+    var boardId = ViewBag.BoardId;
+    var actions = ViewBag.Actions as List<string>;
+}
+
+<div class="text-center mb-2">
+    <div id="toolbar" class="d-inline-flex gap-2 p-2 bg-white shadow rounded">
+
+        <input type="color" id="colorPicker" class="form-control form-control-color">
+        <input type="range" id="brushSize" min="1" max="10" value="2">
+
+        <button class="btn btn-light" onclick="setTool('pen')">✏️</button>
+        <button class="btn btn-light" onclick="setTool('rect')">⬛</button>
+        <button class="btn btn-light" onclick="setTool('circle')">⚪</button>
+        <button class="btn btn-light" onclick="setTool('move')">🖐️</button>
+        <button onclick="setTool('erase')" class="btn btn-light">🧽</button>
+
+        <button class="btn btn-warning" onclick="clearCanvas()">🧹</button>
+        <button class="btn btn-success" onclick="exportImage()">📸</button>
+        <button class="btn btn-primary" onclick="saveAndExit()">💾 Save</button>
+
+    </div>
+</div>
+
+<div class="d-flex justify-content-center">
+    <canvas id="canvas" class="border rounded shadow"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+<script>
+    const boardId = "@boardId";
+    const existing = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(actions));
+</script>
+
+<script src="/js/drawing.js"></script>

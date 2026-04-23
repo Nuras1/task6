@@ -1,0 +1,48 @@
+﻿@model List<Board>
+
+<h2 class="mb-3">Boards</h2>
+
+<form method="post" asp-action="Create" class="d-flex gap-2 mb-4">
+    <input name="name" class="form-control w-25" placeholder="Board name" />
+    <button class="btn btn-primary">Create</button>
+</form> 
+
+<div class="row">
+    @foreach (var b in Model)
+    {
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm">
+
+                @if (!string.IsNullOrEmpty(b.PreviewImage))
+                {
+                    <img src="@b.PreviewImage" class="card-img-top" style="height:150px;object-fit:cover;" />
+                }
+
+                <div class="card-body">
+                    <h6>@b.Name</h6>
+
+                    <div class="d-flex gap-2">
+
+                        <a href="/Board/Room/@b.Id" class="btn btn-sm btn-outline-primary w-100">
+                            Open
+                        </a>
+
+                        <form asp-controller="Board"
+                              asp-action="Delete"
+                              asp-route-id="@b.Id"
+                              method="post"
+                              onsubmit="return showConfirm(event, this, 'Delete this board?')">
+
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                🗑
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
