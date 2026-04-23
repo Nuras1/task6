@@ -14,4 +14,4 @@ COPY --from=build /app/wwwroot ./wwwroot
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
 
-ENTRYPOINT ["dotnet", "task5.dll"]
+ENTRYPOINT ["dotnet", "task6.dll"]
