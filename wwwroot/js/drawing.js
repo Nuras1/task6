@@ -250,14 +250,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (isErase) ctx.globalCompositeOperation = "destination-out";
 
-            ctx.lineTo(x, y);
+            ctx.lineTo(pos.x, pos.y);
             ctx.stroke();
 
             if (isErase) {
                 ctx.globalCompositeOperation = "source-over";
-                currentErase.points.push({ x, y });
+                currentErase.points.push({ x: pos.x, y: pos.y });
             } else {
-                currentStroke.points.push({ x, y });
+                currentStroke.points.push({ x: pos.x, y: pos.y });
             }
         }
 
