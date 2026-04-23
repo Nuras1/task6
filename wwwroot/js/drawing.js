@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (draggingShape) {
             draggingShape = false;
-            connection.invoke("SendDrawing", boardId, JSON.stringify(selectedShape));
+            connection.invoke("UpdateShape", boardId, JSON.stringify(selectedShape));
             selectedShape = null;
             return;
         }
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         shapes.push(obj);
 
-        connection.invoke("UpdateShape", boardId, JSON.stringify(selectedShape));
+        connection.invoke("SendDrawing", boardId, JSON.stringify(obj));
 
         placingShape = false;
         redraw();
