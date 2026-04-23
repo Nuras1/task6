@@ -51,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let brushSize = Number(localStorage.getItem("brushSize")) || 2;
     let color = localStorage.getItem("color") || "#000000";
 
+    let sliderTimeout;
+
     let strokes = [];
     let currentStroke = null;
     let shapes = [];
