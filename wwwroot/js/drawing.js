@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    let tool = "pen";
+    let tool = TOOLS.PEN;
     let drawing = false;
     let placingShape = false;
 
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (tool !== "pen" && tool !== "erase") return;
+        if (tool !== TOOLS.PEN && tool !== TOOLS.ERASE) return;
 
         drawing = true;
 
@@ -314,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const pos = getMousePos(e);
 
-        if (tool === TOOLS.PEN || tool === TOOLS.ERASE) return;
+        if (tool === TOOLS.PEN || tool === TOOLS.ERASE || tool === TOOLS.MOVE) return;
 
         if (!placingShape) {
             startX = pos.x;
@@ -328,13 +328,14 @@ document.addEventListener("DOMContentLoaded", () => {
             type: tool,
             x1: startX,
             y1: startY,
-            x2: x,
-            y2: y,
+            x2: pos.x,
+            y2: pos.y,
             color,
             size: brushSize
         };
 
         shapes.push(obj);
+
         connection.invoke("UpdateShape", boardId, JSON.stringify(selectedShape));
 
         placingShape = false;
