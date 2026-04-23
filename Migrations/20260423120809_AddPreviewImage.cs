@@ -4,10 +4,8 @@
 
 namespace task6.Migrations
 {
-    /// <inheritdoc />
     public partial class AddPreviewImage : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -17,7 +15,6 @@ namespace task6.Migrations
                 nullable: true);
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

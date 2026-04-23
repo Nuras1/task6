@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
     colorPicker.value = color;
     brushSlider.value = brushSize;
 
-    let sliderTimeout;
 
     brushSlider.addEventListener("input", (e) => {
         clearTimeout(sliderTimeout);
