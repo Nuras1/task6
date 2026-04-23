@@ -78,6 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
     connection.on("ReceiveDrawing", (data) => {
         const d = JSON.parse(data);
 
+        if (d.id) {
+            shapes = shapes.filter(s => s.id !== d.id);
+        }
+
         if (d.type === "stroke") strokes.push(d);
         else if (d.type === "erase") erases.push(d);
         else shapes.push(d);
@@ -320,17 +324,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const obj = {
+            id: Date.now(),
             type: tool,
             x1: startX,
             y1: startY,
-            x2: pos.x,
-            y2: pos.y,
+            x2: x,
+            y2: y,
             color,
             size: brushSize
         };
 
         shapes.push(obj);
-        connection.invoke("SendDrawing", boardId, JSON.stringify(obj));
+        connection.invoke("UpdateShape", boardId, JSON.stringify(selectedShape));
 
         placingShape = false;
         redraw();

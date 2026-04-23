@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Text.Json;
 using task6.Data;
 using task6.Models;
 
@@ -44,6 +45,30 @@ namespace task6.Hubs
             await _context.SaveChangesAsync();
 
             await Clients.Group(boardId).SendAsync("ClearCanvas");
+        }
+        public async Task UpdateShape(string boardId, string data)
+        {
+            if (!int.TryParse(boardId, out var id))
+                return;
+
+            var obj = JsonSerializer.Deserialize<dynamic>(data);
+            long shapeId = obj.id;
+
+            var old = _context.DrawingActions
+                .Where(x => x.BoardId == id && x.Data.Contains($"\"id\":{shapeId}"))
+                .ToList();
+
+            _context.DrawingActions.RemoveRange(old);
+
+            _context.DrawingActions.Add(new DrawingAction
+            {
+                BoardId = id,
+                Data = data
+            });
+
+            await _context.SaveChangesAsync();
+
+            await Clients.Group(boardId).SendAsync("ReceiveDrawing", data);
         }
     }
 }
