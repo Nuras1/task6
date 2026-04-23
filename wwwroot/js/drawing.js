@@ -243,9 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (drawing && (tool === "pen" || tool === "erase")) {
+        if (drawing && (tool === TOOLS.PEN || tool === TOOLS.ERASE)) {
 
-            const isErase = tool === "erase";
+            const isErase = tool === TOOLS.ERASE;
 
             ctx.strokeStyle = isErase ? "#000" : currentStroke.color;
             ctx.lineWidth = isErase ? currentErase.size : currentStroke.size;
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        if (placingShape && (tool === "rect" || tool === "circle")) {
+        if (placingShape && (tool === TOOLS.RECT || tool === TOOLS.CIRCLE)) {
             redraw();
 
             ctx.strokeStyle = color;
@@ -291,14 +291,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (drawing && tool === "pen") {
+        if (drawing && tool === TOOLS.PEN) {
             drawing = false;
             strokes.push(currentStroke);
             connection.invoke("SendDrawing", boardId, JSON.stringify(currentStroke));
             currentStroke = null;
         }
 
-        if (drawing && tool === "erase") {
+        if (drawing && tool === TOOLS.ERASE) {
             drawing = false;
             erases.push(currentErase);
             connection.invoke("SendDrawing", boardId, JSON.stringify(currentErase));
