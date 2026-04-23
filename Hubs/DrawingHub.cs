@@ -51,24 +51,47 @@ namespace task6.Hubs
             if (!int.TryParse(boardId, out var id))
                 return;
 
-            var obj = JsonSerializer.Deserialize<dynamic>(data);
-            long shapeId = obj.id;
-
-            var old = _context.DrawingActions
-                .Where(x => x.BoardId == id && x.Data.Contains($"\"id\":{shapeId}"))
-                .ToList();
-
-            _context.DrawingActions.RemoveRange(old);
-
-            _context.DrawingActions.Add(new DrawingAction
+            try
             {
-                BoardId = id,
-                Data = data
-            });
+                using var doc = JsonDocument.Parse(data);
+                var shapeId = doc.RootElement.GetProperty("id").GetInt64();
 
-            await _context.SaveChangesAsync();
+                var all = _context.DrawingActions
+                    .Where(x => x.BoardId == id)
+                    .ToList();
 
-            await Clients.Group(boardId).SendAsync("ReceiveDrawing", data);
+                var toRemove = new List<DrawingAction>();
+
+                foreach (var item in all)
+                {
+                    try
+                    {
+                        using var oldDoc = JsonDocument.Parse(item.Data);
+                        if (oldDoc.RootElement.TryGetProperty("id", out var idProp))
+                        {
+                            if (idProp.GetInt64() == shapeId)
+                                toRemove.Add(item);
+                        }
+                    }
+                    catch { }
+                }
+
+                _context.DrawingActions.RemoveRange(toRemove);
+
+                _context.DrawingActions.Add(new DrawingAction
+                {
+                    BoardId = id,
+                    Data = data
+                });
+
+                await _context.SaveChangesAsync();
+
+                await Clients.Group(boardId).SendAsync("ReceiveDrawing", data);
+            }
+            catch
+            {
+                
+            }
         }
     }
 }
